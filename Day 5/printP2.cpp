@@ -8,7 +8,6 @@ constexpr int TEST = 0;
 F f(TEST == 1 ? "test.in" : "main.in");
 
 umap<int, umap<int, bool> > FORWARD;
-umap<int, umap<int, bool> > REVERSE;
 int numRules = TEST ? 21 : 1176;
 int numUpdates = TEST ? 6 : 184;
 int sum = 0;
@@ -17,7 +16,6 @@ int main() {
   for (int i = 0; i < numRules; i++) {
     f >> p1 >> c >> p2;
     FORWARD[p1][p2] = true;
-    REVERSE[p2][p1] = true;
   }
   std::string line; getline(f, line); getline(f, line);
   vec<int> update;
