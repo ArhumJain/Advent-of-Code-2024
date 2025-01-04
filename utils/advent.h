@@ -11,9 +11,11 @@
 #include <regex>
 #include <sstream>
 #include <utility>
+#include <complex>
 
 
 using namespace std;
+using namespace std::complex_literals;
 
 namespace aoc {
     using F = std::ifstream;
@@ -40,16 +42,16 @@ namespace aoc {
     using ll = long long;
     using ull = unsigned long long;
 
+    using cfloat = std::complex<float>;
+    using cdouble = std::complex<double>;
+
     using sstream = std::stringstream;
 
-    static const vec<std::pair<int, int>> DIRECTIONS = {{0,-1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}};
+    static const vec<std::pair<int, int>> DIRECTIONS = {{0,-1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}}; // Starts West, then clockwise
+    static const vec<cfloat> CCARDINALS = {-1.0f + 0if, 0.0f + 1if, 1.0f + 0if, 0.0f + -1if};
+    static const vec<std::pair<int,int>> CARDINALS = {{-1,0}, {0,1}, {1, 0}, {0, -1}}; // Starts West, then clockwise
+    static const vec<std::pair<int,int>> DIAGONALS = {{-1,-1}, {-1, 1}, {1, 1}, {1, -1}}; // Starts top left, then clockwise
 
-    class CONSTANTS {
-      public:
-        static const vec<std::pair<int, int>> DIRECTIONS;
-    };
-
-    const vec<std::pair<int, int>> CONSTANTS::DIRECTIONS =  {{0,-1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}};
 
     template <typename T> 
     void print1d(std::vector<T> &v, string delimiter="\n") {
@@ -69,6 +71,10 @@ namespace aoc {
             for(T i: _) std::cout << i << delimitColumn;
             std::cout << delimitRow;
         }
+    }
+
+    bool gridOutOfBounds(int row, int col, int maxRow, int maxCol) {
+      return !(row >= 0 && row < maxRow && col >= 0 && col < maxCol);
     }
 
     template <typename T>
@@ -94,6 +100,28 @@ namespace aoc {
             start = end + d.size();
             end = s.find(d, start);
             sp.push_back(stoi(s.substr(start, end-start)));
+        } while (end != -1);
+        return sp;
+    }
+
+    std::vector<long> splitLong(std::string s, std::string d = " ") { // thanks stackoverflow!
+        std::vector<long> sp;
+        int start, end = -1*d.size();
+        do {
+            start = end + d.size();
+            end = s.find(d, start);
+            sp.push_back(stol(s.substr(start, end-start)));
+        } while (end != -1);
+        return sp;
+    }
+
+    std::vector<long long> splitLongLong(std::string s, std::string d = " ") { // thanks stackoverflow!
+        std::vector<long long> sp;
+        int start, end = -1*d.size();
+        do {
+            start = end + d.size();
+            end = s.find(d, start);
+            sp.push_back(stoll(s.substr(start, end-start)));
         } while (end != -1);
         return sp;
     }
